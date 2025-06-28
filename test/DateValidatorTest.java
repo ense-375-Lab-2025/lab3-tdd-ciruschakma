@@ -39,4 +39,11 @@ public class DateValidatorTest {
         boolean legalDate = dateValidator.validate("02292020");
         assertTrue(legalDate);
     }
+
+        @Test
+    public void Validate_TodaySeparated_True(){
+        DateValidator dateValidator = new DateValidator();
+        boolean legalDate = dateValidator.validate("02/04/2021");
+        assertTrue(legalDate);
+    }
 }
