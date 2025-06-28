@@ -8,6 +8,12 @@ public class DateValidatorTest {
         DateValidator dateValidator = new DateValidator();
         boolean legalDate = dateValidator.validate("06202025");
         assertTrue(legalDate);
+    }
 
+    @Test
+    public void Validate_Tomorrow_True(){
+        DateValidator dateValidator = new DateValidator();
+        boolean legalDate = dateValidator.validate("06212025");
+        assertTrue(legalDate);
     }
 }
