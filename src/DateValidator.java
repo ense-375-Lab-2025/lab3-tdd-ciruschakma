@@ -1,6 +1,6 @@
 public class DateValidator {
     public boolean validate(String date){
-        if (date == "06202025"){
+        if (date.length() == 8){
             return true;
         } else {
             return false;
