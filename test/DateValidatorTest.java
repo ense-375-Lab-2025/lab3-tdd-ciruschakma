@@ -75,4 +75,11 @@ public class DateValidatorTest {
         assertTrue(dv.validate("Friday, June 20, 2025"));
     }
 
+    //Assignment Test 2
+    @Test
+    public void Validate_ShortWeekday_LongMonth_True() {
+        DateValidator dv = new DateValidator();
+        assertTrue(dv.validate("Fri, June 20, 2025"));
+    }
+
 }
