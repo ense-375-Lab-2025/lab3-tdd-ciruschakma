@@ -26,4 +26,10 @@ public class DateValidatorTest {
         assertFalse(illegalDate);
     }
     
+        @Test
+    public void Validate_Feb31_False(){
+        DateValidator dateValidator = new DateValidator();
+        boolean illegalDate = dateValidator.validate("02312025");
+        assertFalse(illegalDate);
+    }
 }
