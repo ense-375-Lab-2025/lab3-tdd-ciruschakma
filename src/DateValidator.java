@@ -1,6 +1,6 @@
 public class DateValidator {
 
-    private boolean checkIllegalDays(int month, int day, int year){
+    private boolean isDateIllegal(int month, int day, int year){
         return 
         // obviously illegal
         day >= 32 || month >= 13 ||
@@ -11,7 +11,7 @@ public class DateValidator {
         ( month == 9  && day == 31 ) ||
         ( month == 11 && day == 31 ) ||
         ( month == 2  && day == 30 ) ||
-        //illegal...                   except on leap years
+        //illegal...           except on leap years
         ( month == 2  && day == 29 && (year % 4 != 0));
     }
 
@@ -26,6 +26,13 @@ public class DateValidator {
 
         } else if (date.length() == 10) {
 
+            String letter2 =  date.substring(2,3);
+            String letter5 =  date.substring(5,6);
+
+            if (!letter2.equals(letter5)) {
+                return false;
+            }
+
             mm = date.substring(0,2);
             dd = date.substring(3,5);
             yyyy = date.substring(6,10);
@@ -38,6 +45,7 @@ public class DateValidator {
         int day   = Integer.parseInt(dd);
         int year  = Integer.parseInt(yyyy);
 
-        return checkIllegalDays(month, day, year);
+        return ! isDateIllegal(month, day, year);
+
     }
 }
