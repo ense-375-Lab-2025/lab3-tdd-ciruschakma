@@ -1,3 +1,9 @@
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeParseException;
+import java.time.format.TextStyle;
+import java.util.Locale;
+
 public class DateValidator {
 
     private boolean isDateIllegal(int month, int day, int year) {
@@ -16,13 +22,15 @@ public class DateValidator {
     }
 
     public boolean validate(String date) {
-
-        if (date.equals("Friday, June 20, 2025")
-         || date.equals("Fri, June 20, 2025")) {
+        // first, all your existing simple‐format checks
+        if (validateSimpleFormats(date)) {
             return true;
         }
+        // then fallback to weekday+word-month parsing
+        return validateWeekdayFormat(date);
+    }
 
-
+    public boolean validateSimpleFormats(String date) {
         String mm, dd, yyyy;
 
         if (date.length() == 8) {
@@ -57,5 +65,35 @@ public class DateValidator {
             // non-numeric substrings are invalid date
             return false;
         }
+    }
+
+    private boolean validateWeekdayFormat(String input) {
+        String[] parts = input.split(",", 2);
+        if (parts.length < 2) return false;
+
+        String weekdayToken = parts[0].trim();
+        String rest         = parts[1].trim();
+
+        DateTimeFormatter[] formatters = {
+            DateTimeFormatter.ofPattern("MMMM d, yyyy", Locale.ENGLISH),
+            DateTimeFormatter.ofPattern("MMM d, yyyy",  Locale.ENGLISH)
+        };
+
+        LocalDate parsed = null;
+        for (DateTimeFormatter fmt : formatters) {
+            try {
+                parsed = LocalDate.parse(rest, fmt);
+                break;
+            } catch (DateTimeParseException ignored) { }
+        }
+        if (parsed == null) return false;
+
+        String fullName  = parsed.getDayOfWeek()
+                                 .getDisplayName(TextStyle.FULL,  Locale.ENGLISH);
+        String shortName = parsed.getDayOfWeek()
+                                 .getDisplayName(TextStyle.SHORT, Locale.ENGLISH);
+
+        return weekdayToken.equalsIgnoreCase(fullName)
+            || weekdayToken.equalsIgnoreCase(shortName);
     }
 }
