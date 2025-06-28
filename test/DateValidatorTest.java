@@ -60,4 +60,11 @@ public class DateValidatorTest {
         boolean illegalDate = dateValidator.validate("abcdefgh");
         assertFalse(illegalDate);
     }
+
+    @Test
+    public void Validate_NonNumeric10_False(){
+        DateValidator dateValidator = new DateValidator();
+        boolean illegalDate = dateValidator.validate("ab/cd/efgh");
+        assertFalse(illegalDate);
+    }
 }
