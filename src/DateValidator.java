@@ -11,26 +11,37 @@ public class DateValidator {
         ( month == 9  && day == 31 ) ||
         ( month == 11 && day == 31 ) ||
         ( month == 2  && day == 30 ) ||
-        //illegal...                  except on leap years
+        //illegal...                   except on leap years
         ( month == 2  && day == 29 && (year % 4 != 0));
     }
 
     public boolean validate(String date){
+
+        String mm, dd, yyyy;
         if (date.length() == 8){
-            String mm = date.substring(0,2);
-            String dd = date.substring(2,4);
-            String yyyy = date.substring(4,8);
 
-            int month = Integer.parseInt(mm);
-            int day = Integer.parseInt(dd);
-            int year = Integer.parseInt(yyyy);
+            mm = date.substring(0,2);
+            dd = date.substring(2,4);
+            yyyy = date.substring(4,8);
 
-            if ( checkIllegalDays(month, day, year) ) {
-                    return false;
-                }
+        } else if (date.length() == 10) {
+
+            mm = date.substring(0,2);
+            dd = date.substring(3,5);
+            yyyy = date.substring(6,10);
+
         } else {
             return false;
         }
-        return true;
+
+        int month = Integer.parseInt(mm);
+        int day   = Integer.parseInt(dd);
+        int year  = Integer.parseInt(yyyy);
+
+        if ( checkIllegalDays(month, day, year) ) {
+                return false;
+        } else {
+            return true;
+        }
     }
 }
