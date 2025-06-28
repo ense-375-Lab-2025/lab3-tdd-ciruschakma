@@ -46,4 +46,11 @@ public class DateValidatorTest {
         boolean legalDate = dateValidator.validate("02/04/2021");
         assertTrue(legalDate);
     }
+
+        @Test
+    public void Validate_TodaySeparatorsMismatch_False(){
+        DateValidator dateValidator = new DateValidator();
+        boolean illegalDate = dateValidator.validate("06/20-2025");
+        assertFalse(illegalDate);
+    }
 }
