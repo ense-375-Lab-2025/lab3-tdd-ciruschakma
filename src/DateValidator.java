@@ -66,34 +66,68 @@ public class DateValidator {
             return false;
         }
     }
+    
+    // For AS Test Case 3: manual weekday parsing + Sakamoto’s algorithm
 
     private boolean validateWeekdayFormat(String input) {
-        String[] parts = input.split(",", 2);
-        if (parts.length < 2) return false;
+        // 1) split "Friday, June 20, 2025" → ["Friday", " June 20, 2025"]
+        int comma = input.indexOf(',');
+        if (comma < 0) return false;
 
-        String weekdayToken = parts[0].trim();
-        String rest         = parts[1].trim();
+        String weekdayToken = input.substring(0, comma).trim();      // "Friday" or "Fri"
+        String rest         = input.substring(comma + 1).trim();    // "June 20, 2025"
 
-        DateTimeFormatter[] formatters = {
-            DateTimeFormatter.ofPattern("MMMM d, yyyy", Locale.ENGLISH),
-            DateTimeFormatter.ofPattern("MMM d, yyyy",  Locale.ENGLISH)
-        };
-
-        LocalDate parsed = null;
-        for (DateTimeFormatter fmt : formatters) {
-            try {
-                parsed = LocalDate.parse(rest, fmt);
-                break;
-            } catch (DateTimeParseException ignored) { }
+        // 2) break "June 20, 2025" into [monthName, day, year]
+        String[] parts = rest.split("[ ,]+");
+        if (parts.length != 3) return false;
+        String monthName = parts[0];
+        int day, year;
+        try {
+            day  = Integer.parseInt(parts[1]);
+            year = Integer.parseInt(parts[2]);
+        } catch (NumberFormatException e) {
+            return false;
         }
-        if (parsed == null) return false;
 
-        String fullName  = parsed.getDayOfWeek()
-                                 .getDisplayName(TextStyle.FULL,  Locale.ENGLISH);
-        String shortName = parsed.getDayOfWeek()
-                                 .getDisplayName(TextStyle.SHORT, Locale.ENGLISH);
+        // 3) map month name → month number (1–12)
+        int month = monthFromName(monthName);
+        if (month < 1) return false;
 
-        return weekdayToken.equalsIgnoreCase(fullName)
-            || weekdayToken.equalsIgnoreCase(shortName);
+        // 4) compute weekday index (0=Sunday,…,6=Saturday)
+        int w = dayOfWeek(year, month, day);
+
+        // 5) full & short names for comparison
+        String[] fullNames  = {"Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"};
+        String[] shortNames = {"Sun","Mon","Tues","Wed","Thurs","Fri","Sat"};
+
+        // 6) match token (case-insensitive)
+        return weekdayToken.equalsIgnoreCase(fullNames[w])
+            || weekdayToken.equalsIgnoreCase(shortNames[w]);
+    }
+
+    // map full or 3-letter month to 1–12
+    private int monthFromName(String name) {
+        switch (name.toLowerCase()) {
+            case "january": case "jan":    return 1;
+            case "february":case "feb":    return 2;
+            case "march":   case "mar":    return 3;
+            case "april":   case "apr":    return 4;
+            case "may":                   return 5;
+            case "june":    case "jun":    return 6;
+            case "july":    case "jul":    return 7;
+            case "august":  case "aug":    return 8;
+            case "september":case "sep":   return 9;
+            case "october": case "oct":    return 10;
+            case "november":case "nov":    return 11;
+            case "december":case "dec":    return 12;
+            default: return -1;
+        }
+    }
+
+    // Sakamoto’s algorithm: returns 0=Sunday,…,6=Saturday
+    private int dayOfWeek(int y, int m, int d) {
+        int[] t = {0, 3, 2, 5, 0, 3, 5, 1, 4, 6, 2, 4};
+        if (m < 3) y -= 1;
+        return (y + y/4 - y/100 + y/400 + t[m-1] + d) % 7;
     }
 }
