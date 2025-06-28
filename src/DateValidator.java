@@ -16,7 +16,7 @@ public class DateValidator {
                 (month == 9  && day == 31) ||
                 (month == 11 && day == 31) ||
                 (month == 2  && day == 30) ||
-                (month == 2  && day == 29) ) {
+                (month == 2  && day == 29 && (year % 4 != 0)) ) {
                     return false;
                 }
         } else {
