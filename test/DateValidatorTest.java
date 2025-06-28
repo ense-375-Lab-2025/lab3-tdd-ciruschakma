@@ -1,5 +1,7 @@
 import org.junit.jupiter.api.Test; //JUnit5
 import static org.junit.jupiter.api.Assertions.assertTrue;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+
 
 public class DateValidatorTest {
     
@@ -16,4 +18,12 @@ public class DateValidatorTest {
         boolean legalDate = dateValidator.validate("06212025");
         assertTrue(legalDate);
     }
+
+        @Test
+    public void Validate_Jan32_False(){
+        DateValidator dateValidator = new DateValidator();
+        boolean illegalDate = dateValidator.validate("01322025");
+        assertFalse(illegalDate);
+    }
+    
 }
