@@ -82,4 +82,12 @@ public class DateValidatorTest {
         assertTrue(dv.validate("Fri, June 20, 2025"));
     }
 
+    //Assignment Test 3
+    @Test
+    public void Validate_WrongWeekday_False() {
+        DateValidator dv = new DateValidator();
+        assertFalse(dv.validate("Thursday, June 20, 2025"));
+    }
+
+
 }
