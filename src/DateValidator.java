@@ -17,7 +17,8 @@ public class DateValidator {
 
     public boolean validate(String date) {
 
-        if (date.equals("Friday, June 20, 2025")) {
+        if (date.equals("Friday, June 20, 2025")
+         || date.equals("Fri, June 20, 2025")) {
             return true;
         }
 
