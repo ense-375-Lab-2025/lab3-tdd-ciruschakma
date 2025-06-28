@@ -38,10 +38,6 @@ public class DateValidator {
         int day   = Integer.parseInt(dd);
         int year  = Integer.parseInt(yyyy);
 
-        if ( checkIllegalDays(month, day, year) ) {
-                return false;
-        } else {
-            return true;
-        }
+        return checkIllegalDays(month, day, year);
     }
 }
