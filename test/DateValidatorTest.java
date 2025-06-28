@@ -32,4 +32,11 @@ public class DateValidatorTest {
         boolean illegalDate = dateValidator.validate("02312025");
         assertFalse(illegalDate);
     }
+
+        @Test
+    public void Validate_LeapDay_True(){
+        DateValidator dateValidator = new DateValidator();
+        boolean legalDate = dateValidator.validate("02292020");
+        assertTrue(legalDate);
+    }
 }
