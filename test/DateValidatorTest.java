@@ -67,4 +67,12 @@ public class DateValidatorTest {
         boolean illegalDate = dateValidator.validate("ab/cd/efgh");
         assertFalse(illegalDate);
     }
+    
+    //Assignment Test 1
+    @Test
+    public void Validate_LongWeekdayAndMonth_True() {
+        DateValidator dv = new DateValidator();
+        assertTrue(dv.validate("Friday, June 20, 2025"));
+    }
+
 }
